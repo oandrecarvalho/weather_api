@@ -9,6 +9,5 @@ class User(AbstractUser):
     city = models.CharField(max_length=100, default='', blank=True, null=True)
     state = models.CharField(max_length=100, default='', blank=True, null=True)
 
-
-def __str__(self):
-    return f"{self.name} - {self.city}/{self.state}"
+    def __str__(self):
+        return f"{self.name} - {self.city}/{self.state}"
