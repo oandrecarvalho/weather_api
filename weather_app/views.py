@@ -19,6 +19,13 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = (AllowAny,)
 
+    def get_permissions(self):
+        if self.action == 'create':
+            return [AllowAny()]
+        return [IsAuthenticated()]
+
+
+
 class WeatherTodayView(APIView):
     authentication_classes = (JWTAuthentication,)
     permission_classes = (IsAuthenticated,)
@@ -29,7 +36,7 @@ class WeatherTodayView(APIView):
         weather_query = WeatherService.get_today_weather(location_query)
 
         if not weather_query :
-            return Response({'detail': 'Meteorological data not found.'}, status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': 'Meteorological data not found.'}, status.HTTP_404_NOT_FOUND)
 
 
         formatted_weather_query = WeatherService.format_today_weather_response(user, weather_query)
@@ -45,7 +52,7 @@ class WeatherNextDayView(APIView):
         location_query = f"{user.city},{user.state}".strip()
         weather_query = WeatherService.get_weather_by_location(location_query)
         if not weather_query or not weather_query['list']:
-            return Response({'detail': 'Meteorological data not found.'}, status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': 'Meteorological data not found.'}, status.HTTP_404_NOT_FOUND)
 
         formatted_weather_query = WeatherService.format_response(user, weather_query['list'][8])
         return Response({'next_day': formatted_weather_query}, status.HTTP_200_OK)
