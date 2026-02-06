@@ -8,6 +8,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import UserSerializer
 from .services import WeatherService
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 User = get_user_model()
 
@@ -17,8 +19,10 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = (AllowAny,)
 
-
 class WeatherTodayView(APIView):
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request, user_id):
         user = get_object_or_404(User, id=user_id)
         location_query = f"{user.city},{user.state}".strip()
@@ -33,6 +37,9 @@ class WeatherTodayView(APIView):
 
 
 class WeatherNextDayView(APIView):
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request, user_id):
         user = get_object_or_404(User, id=user_id)
         location_query = f"{user.city},{user.state}".strip()
@@ -45,6 +52,9 @@ class WeatherNextDayView(APIView):
 
 
 class WeatherNextFiveDaysView(APIView):
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request, user_id):
         user = get_object_or_404(User, id=user_id)
         location_query = f"{user.city},{user.state}".strip()
