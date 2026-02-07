@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Meu Clima</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <div class="container mx-auto px-4 py-10 max-w-3xl">
+        <div class="text-center mb-10">
+            <h1 class="text-2xl font-bold text-gray-800">Previsão do Tempo</h1>
+            <p class="text-gray-600">Olá, {{ user.name }}. Selecione uma opção abaixo:</p>
+        </div>
+
+        <form method="post" class="flex justify-center gap-3 mb-10">
+            {% csrf_token %}
+            <button type="submit" name="action" value="today" class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700">
+                Hoje
+            </button>
+            <button type="submit" name="action" value="next_day" class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700">
+                Amanhã
+            </button>
+            <button type="submit" name="action" value="next_5_days" class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700">
+                5 Dias
+            </button>
+        </form>
+
+        <div class="flex flex-col items-center">
+
+            {% if today %}
+                <div class="bg-white border p-6 rounded-lg shadow-sm w-full max-w-xs text-center">
+                    <h2 class="text-blue-600 font-bold uppercase text-xs">{{ today.location }}</h2>
+                    <p class="text-5xl font-bold my-4">{{ today.temp|floatformat:0 }}°C</p>
+                    <p class="text-gray-700 capitalize">{{ today.description }}</p>
+                    <p class="text-gray-400 text-xs mt-4">Horário: {{ today.date_time|slice:"-5:" }}</p>
+                </div>
+            {% endif %}
+
+            {% if next_day %}
+                <div class="bg-white border p-6 rounded-lg shadow-sm w-full max-w-xs text-center">
+                    <h2 class="text-gray-500 font-bold uppercase text-xs">Amanhã em {{ next_day.location }}</h2>
+                    <p class="text-5xl font-bold my-4">{{ next_day.temp|floatformat:0 }}°C</p>
+                    <p class="text-gray-700 capitalize">{{ next_day.description }}</p>
+                    <p class="text-gray-400 text-xs mt-4">Previsão para 12:00h</p>
+                </div>
+            {% endif %}
+
+            {% if next_5_days %}
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 w-full">
+                    {% for item in next_5_days %}
+                    <div class="bg-white border p-4 rounded-lg text-center shadow-sm">
+                        <p class="text-gray-400 text-xs mb-2">{{ item.date_time|slice:":5" }}</p>
+                        <p class="text-xl font-bold">{{ item.temp|floatformat:0 }}°</p>
+                        <p class="text-blue-500 text-[10px] uppercase font-bold">{{ item.description }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+        </div>
+
+        <div class="text-center mt-12">
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="text-sm text-red-500 hover:underline">
+                    Sair da conta
+                </button>
+            </form>
+</div>
+    </div>
+
+</body>
+</html>
