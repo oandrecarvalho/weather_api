@@ -1,42 +1,61 @@
-# Desafio Técnico: Backend Developer - Weather API
+#  Weather API - Mind7 Challenge
 
-Este projeto consiste em uma API REST desenvolvida para um sistema de gestão de usuários que permite o monitoramento da previsão do tempo baseada em suas localidades. 
+Este é um sistema de previsão do tempo completo, desenvolvido com **Django** e **Django REST Framework**. O projeto oferece uma interface web consumindo dados em tempo real da API OpenWeather.
 
-O projeto utiliza **Python** com o framework **Django** e **Django Rest Framework (DRF)**.
+## Tecnologias Utilizadas
 
----
-##  Tecnologias Utilizadas
-- **Python 3** 
-- **Django** 
-- **Django Rest Framework (DRF)** 
-- **Simple JWT** (Para autenticação futura) 
-- **SQLite** (Banco de dados inicial) 
----
-##  Pré-requisitos
-Antes de começar, você precisará ter o Python 3 instalado em sua máquina.
+* **Backend:** Python 3.14 / Django 6.0
+* **API:** Django REST Framework (DRF)
+* **Autenticação:** JWT (SimpleJWT) para API e Session Auth para Web.
+* **Frontend:** Tailwind CSS via CDN.
+* **Dados:** Integração com OpenWeather API.
+* **Banco de Dados:** SQLite.
 
----
-##  Instalação e Execução
+## Funcionalidades
 
-1. **Clonar o repositório:**
-   ```bash
-   git clone https://github.com/oandrecarvalho/weather_api
-   cd weather_api
-2. **Criar e ativar o ambiente virtual:** 
-    ```bash 
-    (venv) python3 -m venv venv
-    source venv/bin/activate  # No macOS/Linux
-3. **Instalar as dependências:** 
+* **Cadastro de Usuário:** Modelo customizado com e-mail, nome, cidade e estado.
+* **Clima em Tempo Real:** Visualização do clima atual com base na cidade do usuário.
+* **Previsões:** Consultas para o dia seguinte e para os próximos 5 dias.
+* **Conversão de Dados:** Tratamento de timestamps Unix e fuso horário (UTC-3).
+
+## Como Rodar o Projeto
+
+### Pré-requisitos
+* Python 3.10+
+* Uma chave de API da [OpenWeather](https://openweathermap.org/api)
+
+### Passo a Passo
+
+1.  **Clone o repositório:**
+    ```bash
+    git clone [https://github.com/oandrecarvalho/weather_api.git](https://github.com/oandrecarvalho/weather_api.git)
+    cd weather_api
+    ```
+
+2.  **Crie e ative o ambiente virtual:**
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # No Mac/Linux
+    ```
+
+3.  **Instale as dependências:**
     ```bash
     pip install -r requirements.txt
+    ```
 
-4. **Executar as migrações iniciais:** 
+4.  **Configure as variáveis de ambiente:**
+    Crie um arquivo `.env` na raiz do projeto:
+    ```text
+    SECRET_KEY=sua_secret_key_aqui
+    API_KEY=sua_chave_openweather_aqui
+    ```
+
+5.  **Rode as migrações e inicie o servidor:**
     ```bash
     python manage.py migrate
-
-5. **Rodar o servidor de desenvolvimento:**
-    ```bash
     python manage.py runserver
-    O servidor estará disponível em http://127.0.0.1:8000/. 
----
+    ```
+    Acesse: `http://127.0.0.1:8000/`
 
+---
+Desenvolvido por **André Luís** como parte de um desafio técnico.
